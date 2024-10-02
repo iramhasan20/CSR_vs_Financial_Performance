@@ -1,1 +1,27 @@
+import pandas as pd
+import statsmodels.api as sm
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+# Load the CSV file into a pandas DataFrame
+file_name = 'samplefile.csv'  # Replace with the actual file name if different
+df = pd.read_csv(file_name)
+
+# Check the first few rows of the DataFrame to ensure it's loaded correctly
+print(df.head())
+
+# Calculate VIF for each feature
+X = df[['variable_1', 'variable_2', 'variable_3', 'variable_4', 'variable_5', 'variable_6', 'variable_7', 'variable_8']]
+
+# Adding a constant column for the intercept
+X = sm.add_constant(X)
+
+# Create a DataFrame to store VIF values
+vif_data = pd.DataFrame()
+vif_data['Feature'] = X.columns
+
+# Calculate VIF for each feature
+vif_data['VIF'] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
+
+# Display the VIF values
+print(vif_data)
 
